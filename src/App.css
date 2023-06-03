@@ -128,7 +128,22 @@ body {
   background: #555;
 }
 
+.todo-item-content {
+  position: relative;
+}
 
+.pencil-button {
+  position: absolute;
+  right: 10px;
+  border: none;
+  background-color: transparent;
+  color: #6D6875; /* Or any color you prefer */
+  opacity: 0;
+  transition: all 0.3s ease;
+}
 
+.todo-item-content:hover .pencil-button {
+  opacity: 1;
+}
 
 

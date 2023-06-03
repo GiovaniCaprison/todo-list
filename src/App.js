@@ -1,9 +1,6 @@
 import './App.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
-
-
-
+import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from 'react';
 
 function TodoForm({ onSubmit, buttonText, initialValue = "", onChange = () => {} }) {
@@ -24,16 +21,36 @@ function TodoForm({ onSubmit, buttonText, initialValue = "", onChange = () => {}
 }
 
 function TodoItem({ todo, className, onEditClick, onDeleteClick }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editValue, setEditValue] = useState(todo);
+
+  const handlePencilClick = () => {
+    setIsEditing(true);
+  };
+
   return (
     <div className={className}>
       <div className="todo-item-content">
-        <span className="todo-text">{todo}</span>
-        <div>
-          <button className="edit-button" onClick={onEditClick}>
-            <FontAwesomeIcon icon={faPencilAlt} />
+        {isEditing ? (
+          <TodoForm
+            onSubmit={(value) => { onEditClick(value); setIsEditing(false); setEditValue(value); }}
+            buttonText="Save"
+            initialValue={editValue}
+            onChange={setEditValue}
+          />
+        ) : (
+          <>
+            <span className="todo-text">{todo}</span>
+            <button className="pencil-button" onClick={handlePencilClick}>
+              <FontAwesomeIcon icon={faPencilAlt} />
+            </button>
+          </>
+        )}
+        {isEditing && (
+          <button className="delete-button" onClick={onDeleteClick}>
+            <FontAwesomeIcon icon={faTrashAlt} />
           </button>
-          <button className="delete-button" onClick={onDeleteClick}>Delete</button>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -41,24 +58,17 @@ function TodoItem({ todo, className, onEditClick, onDeleteClick }) {
 
 function TodoApp() {
   const [todos, setTodos] = useState([]);
-  const [editIndex, setEditIndex] = useState(null);
-  const [editText, setEditText] = useState("");
 
   const handleNewSubmit = (value) => {
     setTodos([...todos, value]);
   };
 
-  const handleEditSubmit = (value) => {
-    const newTodos = [...todos];
-    newTodos[editIndex] = value;
-    setTodos(newTodos);
-    setEditIndex(null);
+  const handleEditClick = (index, value) => {
+    setTodos(todos.map((todo, i) => (i === index ? value : todo)));
   };
 
   const handleDeleteClick = (index) => {
-    const newTodos = todos.filter((_, todoIndex) => todoIndex !== index);
-    setTodos(newTodos);
-    if (editIndex === index) { setEditIndex(null); }
+    setTodos(todos.filter((_, todoIndex) => todoIndex !== index));
   };
 
   let todoItemClass = "todo-item todo-item-large";
@@ -66,42 +76,28 @@ function TodoApp() {
     todoItemClass = "todo-item todo-item-small";
   } else if (todos.length >= 3) {
     todoItemClass = "todo-item todo-item-medium";
-  } else {
-    todoItemClass = "todo-item todo-item-large";
   }
 
   return (
     <div className="todo-box">
-      {editIndex === null ? (
-        <TodoForm onSubmit={handleNewSubmit} buttonText="Add" />
-      ) : (
-        <TodoForm
-          onSubmit={handleEditSubmit}
-          buttonText="Save"
-          initialValue={editText}
-          onChange={setEditText}
-        />
-      )}
-
+      <TodoForm onSubmit={handleNewSubmit} buttonText="Add" />
       <div className={`todo-list ${todoItemClass}`}>
-        {todos.map((todo, index) =>
-          index === editIndex ? (
-            <div key={index}>{editText}</div>
-          ) : (
-           <TodoItem
-             key={index}
-             todo={todo}
-             className={todoItemClass}
-             onEditClick={() => { setEditIndex(index); setEditText(todo); }}
-             onDeleteClick={() => handleDeleteClick(index)}
-           />
-          )
-        )}
+        {todos.map((todo, index) => (
+          <TodoItem
+            key={index}
+            todo={todo}
+            className={todoItemClass}
+            onEditClick={(value) => handleEditClick(index, value)}
+            onDeleteClick={() => handleDeleteClick(index)}
+          />
+        ))}
       </div>
     </div>
   );
 }
 
 export default TodoApp;
+
+
 
 
