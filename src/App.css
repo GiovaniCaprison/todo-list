@@ -88,14 +88,17 @@ body {
   opacity: 1;
 }
 
-
 .edit-button {
-  background-color: #6D6875;
-  color: white;
+  background-color: transparent;
+  color: #6D6875;
 }
 
 .edit-button:hover {
-  background-color: #565260;
+  color: #565260;
+}
+
+.todo-item-content:hover .edit-button {
+  color: #1a2835;
 }
 
 .delete-button {

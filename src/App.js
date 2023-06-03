@@ -1,4 +1,7 @@
 import './App.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+
 
 
 import React, { useState } from 'react';
@@ -26,7 +29,9 @@ function TodoItem({ todo, className, onEditClick, onDeleteClick }) {
       <div className="todo-item-content">
         <span className="todo-text">{todo}</span>
         <div>
-          <button className="edit-button" onClick={onEditClick}>Edit</button>
+          <button className="edit-button" onClick={onEditClick}>
+            <FontAwesomeIcon icon={faPencilAlt} />
+          </button>
           <button className="delete-button" onClick={onDeleteClick}>Delete</button>
         </div>
       </div>
