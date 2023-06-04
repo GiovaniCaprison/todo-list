@@ -1,103 +1,129 @@
-import './App.css';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencilAlt, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { PlusCircleOutlined, CheckCircleOutlined, DeleteTwoTone, } from "@ant-design/icons";
+import { Input, Button, List, Popconfirm, Form, Card, } from 'antd';
 import React, { useState } from 'react';
+import './App.css';
 
-function TodoForm({ onSubmit, buttonText, initialValue = "", onChange = () => {} }) {
+function TodoForm({ onSubmit, icon, initialValue = "", onChange = () => {}, onDelete }) {
   const [value, setValue] = useState(initialValue);
 
-  const handleSubmit = (event) => {
+   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(value);
+    onSubmit(value || null);
     setValue("");
   };
 
   return (
-    <form className="todo-form" onSubmit={handleSubmit}>
-      <input className="todo-input" value={value} onChange={(e) => { setValue(e.target.value); onChange(e.target.value); }} />
-      <button className="submit-button" type="submit">{buttonText}</button>
-    </form>
+    <Form className="todo-form" onFinish={handleSubmit}>
+      <Input
+        placeholder="New task..."
+        value={value}
+        onChange={(e) => { setValue(e.target.value); onChange(e.target.value); }}
+      />
+      <Button htmlType="submit" shape="circle" icon={icon} />
+      {onDelete && (
+        <Popconfirm
+          title="Sure to delete?"
+          onConfirm={onDelete}
+        >
+          <Button shape="circle" icon={<DeleteTwoTone />} />
+        </Popconfirm>
+      )}
+    </Form>
   );
 }
 
-function TodoItem({ todo, className, onEditClick, onDeleteClick }) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editValue, setEditValue] = useState(todo);
+function TodoList({ title, onTitleChange, onDelete, todos, onTodoChange }) {
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [newTitle, setNewTitle] = useState(title);
 
-  const handlePencilClick = () => {
-    setIsEditing(true);
+  const handleTitleBlur = () => {
+    if (newTitle !== title) {
+      onTitleChange(newTitle);
+    }
+    setIsEditingTitle(false);
+  };
+
+  const handleTitleClick = () => {
+    setIsEditingTitle(true);
+  };
+
+  const handleTitleChange = (e) => {
+    setNewTitle(e.target.value);
   };
 
   return (
-    <div className={className}>
-      <div className="todo-item-content">
-        {isEditing ? (
+    <Card title={
+      isEditingTitle ?
+        <Input
+          autoFocus
+          defaultValue={title}
+          value={newTitle}
+          onChange={handleTitleChange}
+          onBlur={handleTitleBlur}
+          onPressEnter={handleTitleBlur}
+        />
+        :
+        <span onClick={handleTitleClick}>{title}</span>
+    }
+      extra={<Popconfirm title="Sure to delete?" onConfirm={onDelete}><DeleteTwoTone /></Popconfirm>}
+    >
+      {todos.map((todo, index) => (
+        <List.Item key={index}>
           <TodoForm
-            onSubmit={(value) => { onEditClick(value); setIsEditing(false); setEditValue(value); }}
-            buttonText="Save"
-            initialValue={editValue}
-            onChange={setEditValue}
+            onSubmit={(value) => onTodoChange(index, value)}
+            icon={<CheckCircleOutlined />}
+            initialValue={todo}
+            onDelete={() => onTodoChange(index, null)}
           />
-        ) : (
-          <>
-            <span className="todo-text">{todo}</span>
-            <button className="pencil-button" onClick={handlePencilClick}>
-              <FontAwesomeIcon icon={faPencilAlt} />
-            </button>
-          </>
-        )}
-        {isEditing && (
-          <button className="delete-button" onClick={onDeleteClick}>
-            <FontAwesomeIcon icon={faTrashAlt} />
-          </button>
-        )}
-      </div>
-    </div>
+        </List.Item>
+      ))}
+      <TodoForm onSubmit={(value) => onTodoChange(todos.length, value)} icon={<PlusCircleOutlined />} />
+    </Card>
   );
 }
+
 
 function TodoApp() {
-  const [todos, setTodos] = useState([]);
+  const [todoList, setTodoList] = useState(null);
 
-  const handleNewSubmit = (value) => {
-    setTodos([...todos, value]);
+  const handleNewList = () => {
+    const title = prompt('Enter new todo list title');
+    setTodoList({ title, todos: [] });
   };
 
-  const handleEditClick = (index, value) => {
-    setTodos(todos.map((todo, i) => (i === index ? value : todo)));
+  const handleTitleChange = (newTitle) => {
+    setTodoList((currentList) => ({ ...currentList, title: newTitle }));
   };
 
-  const handleDeleteClick = (index) => {
-    setTodos(todos.filter((_, todoIndex) => todoIndex !== index));
+  const handleTodoChange = (index, value) => {
+    setTodoList((currentList) => {
+      const newTodos = [...currentList.todos];
+      if (value === null) {
+        newTodos.splice(index, 1);
+      } else if (index === newTodos.length) {
+        newTodos.push(value);
+      } else {
+        newTodos[index] = value;
+      }
+      return { ...currentList, todos: newTodos };
+    });
   };
-
-  let todoItemClass = "todo-item todo-item-large";
-  if (todos.length >= 5) {
-    todoItemClass = "todo-item todo-item-small";
-  } else if (todos.length >= 3) {
-    todoItemClass = "todo-item todo-item-medium";
-  }
 
   return (
-    <div className="todo-box">
-      <TodoForm onSubmit={handleNewSubmit} buttonText="Add" />
-      <div className={`todo-list ${todoItemClass}`}>
-        {todos.map((todo, index) => (
-          <TodoItem
-            key={index}
-            todo={todo}
-            className={todoItemClass}
-            onEditClick={(value) => handleEditClick(index, value)}
-            onDeleteClick={() => handleDeleteClick(index)}
-          />
-        ))}
-      </div>
+    <div className="todo-board">
+      <Button shape="circle" icon={<PlusCircleOutlined />} onClick={handleNewList} />
+      {todoList &&
+        <TodoList
+          title={todoList.title}
+          onTitleChange={handleTitleChange}
+          onDelete={() => setTodoList(null)}
+          todos={todoList.todos}
+          onTodoChange={handleTodoChange}
+        />
+      }
     </div>
   );
 }
 
 export default TodoApp;
-
-
-
 
