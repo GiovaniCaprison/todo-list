@@ -4,6 +4,8 @@
   align-items: center;
   padding: 2em;
   gap: 1em;
+  background-color: #f0f2f5;
+  min-height: 100vh;
 }
 
 .todo-list {
@@ -29,18 +31,21 @@
 
 .ant-input-affix-wrapper:focus,
 .ant-input-affix-wrapper-focused {
-    box-shadow: none;
+  box-shadow: none;
+}
+
+.ant-btn-primary {
+  background-color: #1890ff;
+  border-color: #1890ff;
+}
+
+.settings-dropdown {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 
-
-.todo-form .ant-input {
-  margin-right: 0.5em;
-}
-
-.todo-form .ant-btn {
-  margin-left: 0.5em;
-}
 
 
 
