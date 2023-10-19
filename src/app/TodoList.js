@@ -1,13 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { DeleteTwoTone } from "@ant-design/icons";
-import { Input, List, Popconfirm, Card, Typography } from 'antd';
+import { Popconfirm, Typography, Input, Card } from 'antd';
 import TodoForm from './TodoForm';
+import { ThemeContext } from './ThemeContext';
+import styled from 'styled-components';
 
-const { Title } = Typography;
+const StyledCard = styled(Card)`
+  width: 300px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  margin-bottom: 20px;
+  background-color: ${props => props.theme === 'dark' ? '#404040' : '#FAF9F6'};
+  color: ${props => props.theme === 'dark' ? '#121212' : '#000'};
+`;
 
 function TodoList({ title, onTitleChange, onDelete, todos, onTodoChange }) {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
+  const { theme } = useContext(ThemeContext);
+
+  const handleTitleChange = (e) => {
+    setNewTitle(e.target.value);
+  };
 
   const handleTitleBlur = () => {
     if (newTitle !== title) {
@@ -16,34 +30,24 @@ function TodoList({ title, onTitleChange, onDelete, todos, onTodoChange }) {
     setIsEditingTitle(false);
   };
 
-  const handleTitleChange = (e) => {
-    setNewTitle(e.target.value);
-  };
-
-  const handleAction1 = () => {
-    console.log('Action 1 triggered');
-  };
-
-  const handleAction2 = () => {
-    console.log('Action 2 triggered');
+  const handleTitleClick = () => {
+    setIsEditingTitle(true);
   };
 
   return (
-    <Card
+    <StyledCard theme={theme}
       bordered={false}
-      style={{ width: 300, boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)', borderRadius: '8px', marginBottom: '20px' }}
       title={
         isEditingTitle ?
           <Input
             autoFocus
-            defaultValue={title}
             value={newTitle}
             onChange={handleTitleChange}
             onBlur={handleTitleBlur}
             onPressEnter={handleTitleBlur}
           />
           :
-          <Title level={3} editable={{ onChange: onTitleChange }}>{title}</Title>
+          <div onClick={handleTitleClick} style={{ fontSize: '1.5em', fontWeight: 'bold' }}>{title}</div>
       }
       extra={
         <>
@@ -52,25 +56,30 @@ function TodoList({ title, onTitleChange, onDelete, todos, onTodoChange }) {
       }
     >
       {todos.map((todo, index) => (
-        <List.Item key={index} style={{ padding: '10px 0' }}>
-          <TodoForm
-            initialValue={todo}
-            onChange={(value) => onTodoChange(index, value)}
-            onDelete={() => onTodoChange(index, null)}
-          />
-        </List.Item>
-      ))}
-      <List.Item style={{ padding: '10px 0' }}>
         <TodoForm
-          isNewItem={true}
-          onSubmit={(value) => {
-            if (value) {
-              onTodoChange(todos.length, value);
-            }
-          }}
+          initialValue={todo}
+          onChange={(value) => onTodoChange(index, value)}
+          onDelete={() => onTodoChange(index, null)}
         />
-      </List.Item>
-    </Card>
+      ))}
+            {todos.map((todo, index) => (
+              <TodoForm
+                theme={theme}
+                initialValue={todo}
+                onChange={(value) => onTodoChange(index, value)}
+                onDelete={() => onTodoChange(index, null)}
+              />
+            ))}
+            <TodoForm
+              theme={theme}
+              isNewItem={true}
+              onSubmit={(value) => {
+                if (value) {
+                  onTodoChange(todos.length, value);
+                }
+              }}
+            />
+    </StyledCard>
   );
 }
 

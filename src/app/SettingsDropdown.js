@@ -1,13 +1,22 @@
-import { Menu, Dropdown, Button } from 'antd';
-import { SettingOutlined, SettingTwoTone, ThunderboltTwoTone } from "@ant-design/icons";
+import React, { useContext } from 'react';
+import { Switch, Menu, Dropdown, Button } from 'antd';
+import { SettingOutlined } from "@ant-design/icons";
+import { ThemeContext } from './ThemeContext';
 
-function SettingsDropdown({ onAction1, onAction2 }) {
+function SettingsDropdown() {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   const menu = (
     <Menu>
-      <Menu.Item key="1" icon={<SettingTwoTone />} onClick={onAction1}>
+      <Menu.Item>
+        <span>Dark Mode</span>
+        <Switch
+          checked={theme === 'dark'}
+          onChange={toggleTheme}
+          style={{ marginLeft: '10px' }}
+        />
       </Menu.Item>
-      <Menu.Item key="2" icon={<ThunderboltTwoTone />} onClick={onAction2}>
-      </Menu.Item>
+      {/* Other menu items can go here */}
     </Menu>
   );
 
@@ -17,10 +26,12 @@ function SettingsDropdown({ onAction1, onAction2 }) {
         type="text"
         shape="circle"
         icon={<SettingOutlined />}
-        style={{ float: 'right' }}
+        className="settings-dropdown"
       />
     </Dropdown>
   );
 }
 
 export default SettingsDropdown;
+
+
