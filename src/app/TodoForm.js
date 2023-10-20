@@ -15,7 +15,7 @@ function TodoForm({ initialValue = "", onChange = () => {}, onSubmit, onDelete, 
 
   const handleChange = (e) => {
     setValue(e.target.value);
-    if(onChange) onChange(e.target.value);
+    if(onChange) onChange();
   };
 
   const handleBlur = () => {

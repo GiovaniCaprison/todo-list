@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { DeleteTwoTone } from "@ant-design/icons";
-import { Popconfirm, Typography, Input, Card } from 'antd';
+import { Popconfirm, Input, Card } from 'antd';
 import TodoForm from './TodoForm';
 import { ThemeContext } from './ThemeContext';
 import styled from 'styled-components';
