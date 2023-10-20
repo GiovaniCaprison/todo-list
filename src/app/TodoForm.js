@@ -19,13 +19,13 @@ function TodoForm({ initialValue = "", onChange = () => {}, onSubmit, onDelete, 
   };
 
   const handleBlur = () => {
-    if (onSubmit) {
+    if (!isNewItem && onSubmit) {
       onSubmit(value);
-      if (!isNewItem) setIsEditing(false);
+      setIsEditing(false);
     }
   };
 
-const handleKeyPress = (e) => {
+  const handleKeyPress = (e) => {
   if (e.key === 'Enter') {
     e.stopPropagation();
     if (onSubmit) {

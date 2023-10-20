@@ -55,22 +55,15 @@ function TodoList({ title, onTitleChange, onDelete, todos, onTodoChange }) {
         </>
       }
     >
-      {todos.map((todo, index) => (
-        <TodoForm
-          initialValue={todo}
-          onChange={(value) => onTodoChange(index, value)}
-          onDelete={() => onTodoChange(index, null)}
-        />
-      ))}
-            {todos.map((todo, index) => (
-              <TodoForm
+        {todos.map((todo, index) => (
+            <TodoForm
                 theme={theme}
                 initialValue={todo}
                 onChange={(value) => onTodoChange(index, value)}
                 onDelete={() => onTodoChange(index, null)}
-              />
-            ))}
-            <TodoForm
+            />
+        ))}
+        <TodoForm
               theme={theme}
               isNewItem={true}
               onSubmit={(value) => {
