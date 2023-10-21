@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Getting Started with TodoList
+
+Todo-list is a web based application which allows you to create and customize todo lists. It is built using ReactJS and Material UI. It is a responsive web application which can be used on any device. It is a simple and easy to use application which can be used to keep track of your daily tasks. I am still working on some more advanced features, but in the meantime please feel free to use this application and provide me with your valuable feedback.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
