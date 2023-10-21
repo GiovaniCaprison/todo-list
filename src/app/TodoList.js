@@ -4,8 +4,7 @@ import { Popconfirm, Input, Card } from 'antd';
 import TodoForm from './TodoForm';
 import { ThemeContext } from './ThemeContext';
 import styled from 'styled-components';
-
-const StyledCard = styled(Card)`
+styled(Card)`
   width: 300px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border-radius: 8px;
@@ -13,7 +12,6 @@ const StyledCard = styled(Card)`
   background-color: ${props => props.theme === 'dark' ? '#404040' : '#FAF9F6'};
   color: ${props => props.theme === 'dark' ? '#121212' : '#000'};
 `;
-
 function TodoList({ title, onTitleChange, onDelete, todos, onTodoChange }) {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
@@ -34,46 +32,47 @@ function TodoList({ title, onTitleChange, onDelete, todos, onTodoChange }) {
     setIsEditingTitle(true);
   };
 
-  return (
-    <StyledCard theme={theme}
-      bordered={false}
-      title={
-        isEditingTitle ?
-          <Input
-            autoFocus
-            value={newTitle}
-            onChange={handleTitleChange}
-            onBlur={handleTitleBlur}
-            onPressEnter={handleTitleBlur}
-          />
-          :
-          <div onClick={handleTitleClick} style={{ fontSize: '1.5em', fontWeight: 'bold' }}>{title}</div>
-      }
-      extra={
-        <>
-          <Popconfirm title="Delete list?" onConfirm={onDelete}><DeleteTwoTone /></Popconfirm>
-        </>
-      }
-    >
-        {todos.map((todo, index) => (
+    return (
+        <Card
+            style={{ width: '100%', maxWidth: '400px' }}
+            title={
+                isEditingTitle ? (
+                    <Input
+                        autoFocus
+                        value={newTitle}
+                        onChange={handleTitleChange}
+                        onBlur={handleTitleBlur}
+                        onPressEnter={handleTitleBlur}
+                    />
+                ) : (
+                    <div onClick={handleTitleClick} style={{ cursor: 'pointer' }}>
+                        {title}
+                    </div>
+                )
+            }
+            extra={
+                <Popconfirm title="Delete list?" onConfirm={onDelete}>
+                    <DeleteTwoTone />
+                </Popconfirm>
+            }
+        >
+            {todos.map((todo, index) => (
+                <TodoForm
+                    key={index}
+                    initialValue={todo}
+                    onChange={() => {}}
+                    onDelete={() => onTodoChange(index, null)}
+                    onSubmit={(value) => onTodoChange(index, value)}
+                    theme={theme}
+                />
+            ))}
             <TodoForm
+                isNewItem={true}
+                onSubmit={(value) => onTodoChange(todos.length, value)}
                 theme={theme}
-                initialValue={todo}
-                onChange={(value) => onTodoChange(index, value)}
-                onDelete={() => onTodoChange(index, null)}
             />
-        ))}
-        <TodoForm
-              theme={theme}
-              isNewItem={true}
-              onSubmit={(value) => {
-                if (value) {
-                  onTodoChange(todos.length, value);
-                }
-              }}
-            />
-    </StyledCard>
-  );
+        </Card>
+    );
 }
 
 export default TodoList;

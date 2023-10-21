@@ -1,20 +1,30 @@
-body {
-  transition: background-color 0.5s ease;
-}
-
-body.light {
-  --bg-color: #f0f2f5;
-  --text-color: #000;
+:root {
+  --light-bg-color: #fbf7f5;
+  --light-text-color: #333;
+  --dark-bg-color: #282828;
+  --dark-text-color: #FFF;
   --primary-color: #1890ff;
 }
 
-body.dark {
-  --bg-color: #282828;
-  --text-color: #FFFFFF;
-  --primary-color: #404040;
+body {
+  transition: background-color 0.5s ease;
+  font-family: 'Arial', sans-serif;
 }
 
-body, .todo-board, .todo-list, .todo-form, .settings-dropdown {
+body.light {
+  --bg-color: var(--light-bg-color);
+  --text-color: var(--light-text-color);
+}
+
+body.dark {
+  --bg-color: var(--dark-bg-color);
+  --text-color: var(--dark-text-color);
+}
+
+.todo-board,
+.todo-list,
+.todo-form,
+.settings-dropdown {
   background-color: var(--bg-color);
   color: var(--text-color);
 }
@@ -23,7 +33,6 @@ body, .todo-board, .todo-list, .todo-form, .settings-dropdown {
   background-color: var(--primary-color) !important;
   border-color: var(--primary-color) !important;
 }
-
 
 .todo-board {
   display: flex;
@@ -35,9 +44,11 @@ body, .todo-board, .todo-list, .todo-form, .settings-dropdown {
 }
 
 .todo-list {
-  width: 300px;
+  width: 100%;
+  max-width: 400px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
 }
 
 .todo-form {
@@ -45,19 +56,6 @@ body, .todo-board, .todo-list, .todo-form, .settings-dropdown {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.5em;
-}
-
-.todo-form .ant-input {
-  margin-right: 0.5em;
-}
-
-.todo-form .ant-btn {
-  margin-left: 0.5em;
-}
-
-.ant-input-affix-wrapper:focus,
-.ant-input-affix-wrapper-focused {
-  box-shadow: none;
 }
 
 .settings-dropdown {
@@ -70,6 +68,29 @@ body, .todo-board, .todo-list, .todo-form, .settings-dropdown {
 .ant-dropdown-menu-item > a {
   color: var(--text-color) !important;
 }
+
+/* Add some padding and border to the form input */
+.ant-input {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #d9d9d9;
+}
+
+/* Add some styling to the cards */
+.ant-card {
+  border-radius: 8px;
+}
+
+.ant-card-head {
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+/* Add some space between card content and actions */
+.ant-card-body {
+  margin-bottom: 1em;
+}
+
 
 
 
