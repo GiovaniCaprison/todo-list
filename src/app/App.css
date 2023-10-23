@@ -1,24 +1,39 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 :root {
-  --light-bg-color: #fbf7f5;
+  --light-bg-color: #f0f0f0;
   --light-text-color: #333;
-  --dark-bg-color: #282828;
-  --dark-text-color: #FFF;
+  --dark-bg-color: #333;
+  --dark-text-color: #f0f0f0;
   --primary-color: #1890ff;
 }
 
 body {
-  transition: background-color 0.5s ease;
   font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  transition: background-color 0.5s ease;
 }
 
+
 body.light {
-  --bg-color: var(--light-bg-color);
-  --text-color: var(--light-text-color);
+  background-color: var(--light-bg-color);
+  color: var(--light-text-color);
 }
 
 body.dark {
-  --bg-color: var(--dark-bg-color);
-  --text-color: var(--dark-text-color);
+  background-color: var(--dark-bg-color);
+  color: var(--dark-text-color);
+}
+
+.todo-app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
 
 .todo-board,
@@ -30,22 +45,34 @@ body.dark {
 }
 
 .ant-btn-primary {
-  background-color: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
 }
 
 .todo-board {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
   padding: 2em;
   gap: 1em;
-  min-height: 100vh;
+  min-height: 50vh;
+  max-width: 1300px;  /* Adjust this value based on your design requirements */
+  margin: 0 auto;
 }
 
+.new-list-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 0px; /* Adjust as needed */
+}
+
+
 .todo-list {
-  width: 100%;
-  max-width: 400px;
+  width: 400px;  /* Fixed width */
+  margin: 0 10px;  /* Horizontal margin */
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   overflow: hidden;
@@ -60,8 +87,8 @@ body.dark {
 
 .settings-dropdown {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 10px;
+  right: 10px;
   color: var(--text-color) !important;
 }
 

@@ -45,32 +45,35 @@ function TodoApp() {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div className="todo-board">
-        <Button
-          shape="circle"
-          icon={<PlusCircleOutlined />}
-          onClick={handleNewList}
-        />
-        {todoLists.map((list, i) =>
-          <TodoList
-            key={i}
-            title={list.title}
-            onTitleChange={(newTitle) => handleTitleChange(i, newTitle)}
-            onDelete={() => {
-              const newList = [...todoLists];
-              newList.splice(i, 1);
-              setTodoLists(newList);
-            }}
-            todos={list.todos}
-            onTodoChange={(todoIndex, value) => handleTodoChange(i, todoIndex, value)}
-          />
-        )}
-        <SettingsDropdown />
-      </div>
-    </ThemeContext.Provider>
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <div className="app-container">
+          <div className="new-list-button">
+            <Button
+                shape="circle"
+                icon={<PlusCircleOutlined />}
+                onClick={handleNewList}
+            />
+          </div>
+          <div className="todo-board">
+            {todoLists.map((list, i) =>
+                <TodoList
+                    key={i}
+                    title={list.title}
+                    onTitleChange={(newTitle) => handleTitleChange(i, newTitle)}
+                    onDelete={() => {
+                      const newList = [...todoLists];
+                      newList.splice(i, 1);
+                      setTodoLists(newList);
+                    }}
+                    todos={list.todos}
+                    onTodoChange={(todoIndex, value) => handleTodoChange(i, todoIndex, value)}
+                />
+            )}
+            <SettingsDropdown />
+          </div>
+        </div>
+      </ThemeContext.Provider>
   );
 }
 
 export default TodoApp;
-
