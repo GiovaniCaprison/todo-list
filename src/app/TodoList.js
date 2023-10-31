@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { DeleteTwoTone } from "@ant-design/icons";
-import { Popconfirm, Input, Card } from 'antd';
+import {Popconfirm, Input, Card, Button} from 'antd';
 import TodoForm from './TodoForm';
 import { ThemeContext } from './ThemeContext';
 import styled from 'styled-components';
@@ -52,7 +52,7 @@ function TodoList({ title, onTitleChange, onDelete, todos, onTodoChange }) {
             }
             extra={
                 <Popconfirm title="Delete list?" onConfirm={onDelete}>
-                    <DeleteTwoTone />
+                    <Button className={'delete-button'} shape="circle" icon={<DeleteTwoTone />} />
                 </Popconfirm>
             }
         >

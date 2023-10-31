@@ -59,7 +59,7 @@ function TodoForm({ initialValue = "", onChange, onSubmit, onDelete, isNewItem =
         {onDelete && (
             <Col>
               <Popconfirm title="Delete task?" onConfirm={onDelete}>
-                <Button shape="circle" icon={<DeleteTwoTone />} />
+                <Button className={'delete-button'} shape="circle" icon={<DeleteTwoTone />} />
               </Popconfirm>
             </Col>
         )}

@@ -7,9 +7,10 @@
 :root {
   --light-bg-color: #f0f0f0;
   --light-text-color: #333;
-  --dark-bg-color: #333;
-  --dark-text-color: #f0f0f0;
-  --primary-color: #1890ff;
+  --dark-bg-color: #232428;
+  --dark-text-color: #f0f1f3;
+  --light-primary-color: #1890ff;
+  --dark-primary-color: #7c2be7;
 }
 
 body {
@@ -36,17 +37,46 @@ body.dark {
   padding: 20px;
 }
 
-.todo-board,
-.todo-list,
-.todo-form,
 .settings-dropdown {
-  background-color: var(--bg-color);
-  color: var(--text-color);
+  position: fixed;
+  top: 10px;
+  right: 10px;
 }
 
-.ant-btn-primary {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
+body.light .settings-dropdown {
+  background-color: var(--light-bg-color);
+  color: var(--light-text-color);
+}
+
+body.light .delete-button {
+  background-color: #ffffff;
+  color: var(--light-text-color);
+  border: none;
+  box-shadow: none;
+}
+
+body.dark .delete-button {
+  background-color: #313338;
+  color: var(--dark-text-color);
+  border: none;
+  box-shadow: none;
+}
+
+body.dark .settings-dropdown {
+  background-color: var(--dark-bg-color);
+  color: var(--dark-text-color);
+}
+
+body.light .ant-btn:hover {
+  background-color: #e5e5e5;
+  border-color: #d9d9d9;
+  color: var(--light-text-color);
+}
+
+body.dark .ant-btn:hover {
+  background-color: #464646;
+  border-color: #484747;
+  color: var(--dark-text-color);
 }
 
 .todo-board {
@@ -65,10 +95,25 @@ body.dark {
 .new-list-button {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 10px;
   margin-bottom: 0px; /* Adjust as needed */
 }
 
+.new-list-button-dark {
+  background-color: var(--dark-bg-color);
+  color: #ffffff;
+  justify-content: center;
+  border-color: var(--dark-bg-color);
+  box-shadow: none;
+}
+
+.new-list-button-light {
+  background-color: var(--light-bg-color);
+  color: #000000;
+  justify-content: center;
+  border-color: var(--light-bg-color);
+  box-shadow: none;
+}
 
 .todo-list {
   width: 400px;  /* Fixed width */
@@ -85,37 +130,218 @@ body.dark {
   margin-bottom: 0.5em;
 }
 
-.settings-dropdown {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  color: var(--text-color) !important;
-}
-
-.ant-dropdown-menu-item > a {
-  color: var(--text-color) !important;
-}
-
-/* Add some padding and border to the form input */
-.ant-input {
+body.light .ant-input {
   padding: 8px;
+  font-size: 1.05em;
   border-radius: 4px;
   border: 1px solid #d9d9d9;
+  background: #ffffff;
+  color: var(--light-text-color);
 }
 
-/* Add some styling to the cards */
-.ant-card {
-  border-radius: 8px;
+body.dark .ant-input {
+  padding: 8px;
+  font-size: 1.05em;
+  border-radius: 5px;
+  border: none;
+  background: #383a3f;
+  color: var(--dark-text-color);
 }
 
-.ant-card-head {
-  font-size: 1.25em;
-  font-weight: bold;
+body.dark .ant-input::placeholder {
+  color: var(--dark-text-color);
+}
+
+body.light .ant-card {
+  border-radius: 10px;
+  background-color: #ffffff;
+  border-color: #d9d9d9;
+}
+
+body.dark .ant-card {
+  border-radius: 10px;
+  background-color: #313338;
+  border-color: #464646;
+}
+
+body.dark .ant-input,
+body.light .ant-input {
+  font-size: 1.08em;  /* Keep the font size consistent */
+  padding: 5px 10px;  /* Adjust padding as needed */
+}
+
+body.dark .ant-card-head {
+  font-size: 1.35em;
+  text-align: center;
+  color: var(--dark-text-color);
+  border-bottom-color: #484747;
+}
+
+body.light .ant-card-head {
+  font-size: 1.35em;
+  text-align: center;
+  color: var(--light-text-color);
+  border-bottom-color: #d9d9d9;
 }
 
 /* Add some space between card content and actions */
-.ant-card-body {
+body.light .ant-card-body {
   margin-bottom: 1em;
+}
+
+body.dark .ant-card-body {
+  margin-bottom: 1em;
+}
+
+body.light .ant-dropdown-menu {
+    background-color: #ffffff;
+}
+
+body.dark .ant-dropdown-menu {
+    background-color: #313338;
+}
+
+body.dark .ant-dropdown-menu-item {
+  color: var(--dark-text-color) !important;
+}
+
+body.light atn-dropdown-menu-item {
+  color: var(--light-text-color) !important;
+}
+
+
+
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 200px;
+  backdrop-filter: blur(5px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-overlay.closed {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;  /* Prevent any interaction while modal is closed */
+}
+
+body.light .modal,
+body.dark .modal {
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transform: scale(0.95);
+}
+
+body.light .modal {
+  background: var(--light-bg-color);
+}
+
+body.dark .modal {
+  background: var(--dark-bg-color);
+}
+
+body.light .modal-input,
+body.dark .modal-input {
+  width: 100%;
+  text-align: center;
+  font-size: 1em;
+  padding: 9px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  transition: border 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+body.light .modal-input {
+  border: none;
+  background: #ffffff;
+  color: var(--light-text-color);
+  box-shadow: none;
+
+}
+
+body.dark .modal-input {
+  border: none;
+  background: #383a3f;
+  color: var(--dark-text-color);
+  box-shadow: none;
+}
+
+body.dark .modal-input:focus {
+  border: none;
+  background-color: #4a4d53;
+  box-shadow: none;
+  outline: none;
+}
+
+body.light .modal-input:focus {
+  border: none;
+  background-color: #e5e5e5;
+  box-shadow: none;
+  outline: none;
+}
+
+body.dark .modal-input:hover {
+  border: none;
+  background-color: #4a4d53;
+}
+
+body.light .modal-input:hover {
+  border: none;
+  background-color: #e5e5e5;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-around;
+}
+
+body.light .modal-button,
+body.dark .modal-button {
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+body.light .modal-button {
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+}
+
+body.dark .modal-button {
+  border: none;
+  background-color: #383a3f;
+  color: var(--dark-text-color);
+}
+
+body.light .modal-button:hover {
+  transform: translateY(-2px);
+  background-color: #e5e5e5;
+}
+
+body.dark .modal-button:hover {
+  transform: translateY(-2px);
+  background-color: #4a4d53;
+}
+
+.modal-button:active {
+  transform: translateY(0);
 }
 
 

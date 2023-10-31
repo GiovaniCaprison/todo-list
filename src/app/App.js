@@ -1,27 +1,32 @@
+import React, { useState, useEffect } from 'react';
 import { PlusCircleOutlined } from "@ant-design/icons";
 import { Button } from 'antd';
-import React, { useState, useEffect } from 'react';
-import { ThemeContext } from './ThemeContext';
 import './App.css';
 import SettingsDropdown from './SettingsDropdown';
 import TodoList from './TodoList';
+import { ThemeContext } from './ThemeContext';
+import Model from './model';  // Assume you have this component
+import { FloatButton} from "antd";
 
 function TodoApp() {
   const [theme, setTheme] = useState('light');
   const [todoLists, setTodoLists] = useState([]);
+  const [isNewListModalOpen, setIsNewListModalOpen] = useState(false);
 
   useEffect(() => {
     document.body.className = theme;
   }, [theme]);
 
+  const themeClass = theme === 'light' ? 'new-list-button-light' : 'new-list-button-dark';
+
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
-  const handleNewList = () => {
-    const title = prompt('Enter new todo list title');
+  const handleNewList = (title) => {
     const newList = { title, todos: [] };
     setTodoLists([...todoLists, newList]);
+    setIsNewListModalOpen(false);
   };
 
   const handleTitleChange = (index, newTitle) => {
@@ -46,31 +51,34 @@ function TodoApp() {
 
   return (
       <ThemeContext.Provider value={{ theme, toggleTheme }}>
-        <div className="app-container">
+        <div className={`app-container ${theme}`}>
           <div className="new-list-button">
             <Button
+                className={themeClass}
                 shape="circle"
                 icon={<PlusCircleOutlined />}
-                onClick={handleNewList}
+                onClick={() => setIsNewListModalOpen(true)}
             />
           </div>
           <div className="todo-board">
             {todoLists.map((list, i) =>
                 <TodoList
-                    key={i}
+                    key={list.title}
                     title={list.title}
                     onTitleChange={(newTitle) => handleTitleChange(i, newTitle)}
-                    onDelete={() => {
-                      const newList = [...todoLists];
-                      newList.splice(i, 1);
-                      setTodoLists(newList);
-                    }}
+                    onDelete={() => setTodoLists(todoLists.filter((_, index) => index !== i))}
                     todos={list.todos}
                     onTodoChange={(todoIndex, value) => handleTodoChange(i, todoIndex, value)}
                 />
             )}
             <SettingsDropdown />
           </div>
+          <FloatButton.BackTop />
+          <Model
+              isOpen={isNewListModalOpen}
+              onClose={() => setIsNewListModalOpen(false)}
+              onConfirm={handleNewList}
+          />
         </div>
       </ThemeContext.Provider>
   );
