@@ -22,12 +22,6 @@ const NewListModal = ({ isOpen, onClose, onConfirm }) => {
     };
 
     useEffect(() => {
-        if (isOpen) {
-            setInputValue('');  // Reset the input value when the modal opens
-        }
-    }, [isOpen]);
-
-    useEffect(() => {
         const handleKeyPress = (event) => {
             if (event.key === 'Enter') {
                 event.preventDefault();  // Prevent the default action
@@ -52,8 +46,6 @@ const NewListModal = ({ isOpen, onClose, onConfirm }) => {
         onConfirm(inputValue);
         onClose();
     };
-
-    if (!isOpen) return false;
 
     return (
         <div className={`modal-overlay ${isOpen ? 'open' : 'closed'}`}>

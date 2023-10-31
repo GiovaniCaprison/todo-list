@@ -79,6 +79,10 @@ body.dark .ant-btn:hover {
   color: var(--dark-text-color);
 }
 
+body.dark .ant-btn:hover .anticon-delete svg path[d="M292.7 840h438.6l24.2-512h-487z"] {
+  fill: #464646 !important;
+}
+
 .todo-board {
   display: flex;
   flex-direction: row;
@@ -139,11 +143,16 @@ body.light .ant-input {
   color: var(--light-text-color);
 }
 
+body.dark .anticon-delete svg path[d="M292.7 840h438.6l24.2-512h-487z"] {
+  fill: #313338 !important;
+  stroke: var(--dark-text-color) !important;
+}
+
 body.dark .ant-input {
-  padding: 8px;
+padding: 8px;
   font-size: 1.05em;
   border-radius: 5px;
-  border: none;
+  border: 1px solid #1a1b1e;
   background: #383a3f;
   color: var(--dark-text-color);
 }
@@ -161,7 +170,7 @@ body.light .ant-card {
 body.dark .ant-card {
   border-radius: 10px;
   background-color: #313338;
-  border-color: #464646;
+  border-color: #1a1b1e;
 }
 
 body.dark .ant-input,
@@ -174,7 +183,7 @@ body.dark .ant-card-head {
   font-size: 1.35em;
   text-align: center;
   color: var(--dark-text-color);
-  border-bottom-color: #484747;
+  border-bottom-color: #1a1b1e;
 }
 
 body.light .ant-card-head {
@@ -224,18 +233,21 @@ body.light atn-dropdown-menu-item {
   align-items: flex-start;
   padding-top: 200px;
   backdrop-filter: blur(5px);
-  transition: opacity 0.3s, transform 0.3s;
+  transition: none;
 }
 
 .modal-overlay.open {
   opacity: 1;
-  transform: scale(1);
+  transform: none;
 }
 
 .modal-overlay.closed {
   opacity: 0;
-  transform: scale(0.95);
+  transform: none;
   pointer-events: none;  /* Prevent any interaction while modal is closed */
+}
+.modal-overlay.open .modal {
+  transform: scale(1); /* Scale to normal size when open */
 }
 
 body.light .modal,
@@ -250,10 +262,14 @@ body.dark .modal {
 
 body.light .modal {
   background: var(--light-bg-color);
+  transform: scale(0.95); /* Initial scale for modal */
+  transition: transform 0.3s ease-in-out;
 }
 
 body.dark .modal {
   background: var(--dark-bg-color);
+  transform: scale(0.95); /* Initial scale for modal */
+  transition: transform 0.3s ease-in-out;
 }
 
 body.light .modal-input,

@@ -5,7 +5,7 @@ import './App.css';
 import SettingsDropdown from './SettingsDropdown';
 import TodoList from './TodoList';
 import { ThemeContext } from './ThemeContext';
-import Model from './model';  // Assume you have this component
+import NewListModal from './model';  // Assume you have this component
 import { FloatButton} from "antd";
 
 function TodoApp() {
@@ -74,7 +74,7 @@ function TodoApp() {
             <SettingsDropdown />
           </div>
           <FloatButton.BackTop />
-          <Model
+          <NewListModal
               isOpen={isNewListModalOpen}
               onClose={() => setIsNewListModalOpen(false)}
               onConfirm={handleNewList}
